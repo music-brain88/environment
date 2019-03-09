@@ -38,7 +38,6 @@ RUN git clone --depth 1 https://github.com/neologd/mecab-ipadic-neologd.git\
 
 # Neologdのユーザ辞書周りの設定　配置場所は仮（要検討）
 # ユーザ辞書は本dockerfile内に配置する　（ノウハウが絡む部分なので，gitignore必須！）
-
 COPY ./dictfiles/.userdic.csv /opt/program/.userdic.csv
 RUN /usr/lib/mecab/mecab-dict-index -d /usr/lib/mecab/dic/mecab-ipadic-neologd \
     -u /opt/program/.mda_userdic.csv -f utf-8 -t utf-8 /opt/program/.userdic.csv
@@ -53,4 +52,17 @@ ENV PYTHONDONTWRITEBYTECODE=TRUE
 ENV PATH="/opt/program:${PATH}"
 
 RUN pip install --upgrade pip
-RUN pip install jupyter -U && pip install jupyterlab
+
+RUN pip3.5 install mecab-python3==0.7 \
+    pandas \
+    pyyaml \
+    gensim \
+    wikipedia2vec \
+    keras \
+    --upgrade tensorflow \
+    mojimoji \
+    awscli \
+    sagemaker \
+    python-dotenv
+
+RUN pip3.5 install jupyter -U && pip install jupyterlab
