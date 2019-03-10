@@ -1,8 +1,8 @@
 version: '3.5'
 services:
     mysql_db:
-        image: mysql:5.7
         container_name: ai_mysql
+        image: mysql:5.7 
         environment:
             MYSQL_ROOT_PASSWORD: root
             MYSQL_DATABASE: ai_db
@@ -12,7 +12,10 @@ services:
             - ./data/common_db/conf.d:/etc/mysql/conf.d
         ports:
             - "33060:33060"
+        networks:
+            - net
     jupyter:
+        container_name: lab
         build:
             context: .
             dockerfile: ./Dockerfile
@@ -22,6 +25,15 @@ services:
         ports:
             - "8888:8888"
         command: jupyter lab --allow-root --ip=0.0.0.0 --no-browser
+        networks:
+            - net
+        links:
+          - mysql_db:mysql_db
 volumes:
     mysql-storage:
         driver: local
+networks:
+  net:
+    driver: bridge
+    ipam:
+      driver: default
