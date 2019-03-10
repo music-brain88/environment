@@ -1,0 +1,7 @@
+.env
+.old
+test_data.pkl
+*.json
+*.pkl
+*.pickle
+*.csv
