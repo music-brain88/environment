@@ -2,7 +2,9 @@ version: '3.5'
 services:
     mysql_db:
         container_name: ai_mysql
-        image: mysql:5.7 
+        build:
+            context: .
+            dockerfile: ./docker/Dockerfile-mysql
         environment:
             MYSQL_ROOT_PASSWORD: root
             MYSQL_DATABASE: ai_db
@@ -18,7 +20,7 @@ services:
         container_name: lab
         build:
             context: .
-            dockerfile: ./Dockerfile
+            dockerfile: ./docker/Dockerfile-jupyter
         user: root
         volumes:
             - ./home:/home
