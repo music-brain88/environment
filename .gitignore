@@ -7,3 +7,4 @@ test_data.pkl
 *.csv
 home/*
 !.gitkeep
+.DS_Store
