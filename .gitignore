@@ -6,5 +6,6 @@ test_data.pkl
 *.pickle
 *.csv
 home/*
+dictfiles/*
 !.gitkeep
 .DS_Store
