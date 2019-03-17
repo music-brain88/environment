@@ -17,7 +17,7 @@ services:
         networks:
             - net
     jupyter:
-        container_name: lab
+        container_name: python_lab
         build:
             context: .
             dockerfile: ./docker/Dockerfile-jupyter
