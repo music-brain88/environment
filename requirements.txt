@@ -86,6 +86,7 @@ protobuf==3.6.1
 protobuf3-to-dict==0.1.5
 ptyprocess==0.6.0
 py==1.7.0
+pyaml==18.11.0
 pyasn1==0.4.5
 pybind11==2.2.4
 Pygments==2.3.1
