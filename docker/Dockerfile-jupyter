@@ -1,61 +1,89 @@
-FROM ubuntu:16.04
+FROM nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04
 
 MAINTAINER music-brain88 <music.brain88@gmail.com>
 
-RUN apt-get -y update && apt-get install -y \
-         wget \
-         curl \
-         python3.5-dev \
-         nginx \
-         ca-certificates \
-         mecab \
-         libmecab-dev \
-         mecab-ipadic \
-         mecab-ipadic-utf8 \
-         git \
-         make \
-         xz-utils \
-         file \
-         sudo \
-         swig \
-         nano \
-         vim \
-         emacs \
-         locales \
-         patch \
-         build-essential \
-         ssh \
-         npm \
-         zip \
-         unzip \
-&& rm -rf /var/lib/apt/lists/*
+# setting cuda path
+ENV LD_LIBRARY_PATH="/usr/local/cuda/lib:/usr/local/cuda/lib64:$LD_LIBRARY_PATH"
+ENV CUDA_HOME="/usr/local/cuda"
+
+ENV VIRTUAL_ENV=/home/venv
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+
+RUN perl -p -i.bak -e 's%https?://(?!security)[^ \t]+%http://ftp.jaist.ac.jp/pub/Linux/ubuntu/%g' /etc/apt/sources.list``
+RUN apt-get clean
+RUN rm -rf /var/lib/apt/lists/*
+RUN apt-get update
+RUN apt-get upgrade -y
+RUN apt-get install -y \
+    locales \
+    unzip \
+    python3-all-dev \
+    python3-pip \
+    python3-venv \
+    mecab \
+    libmecab-dev \
+    mecab-ipadic-utf8 \
+    git \
+    curl \
+    make \
+    sudo \
+    pkg-config \
+    libcairo2-dev \
+    gobject-introspection \
+    libgirepository1.0-dev \
+    apt-utils \
+    npm \
+    neovim \
+    nginx \
+    gosu
+
+RUN python3 -m venv  $VIRTUAL_ENV
+
+RUN rm -rf /root/.cache
+RUN pip3 install --upgrade pip
 
 RUN locale-gen ja_JP.UTF-8
 ENV LANG ja_JP.UTF-8
 ENV LANGUAGE ja_JP:ja
 ENV LC_ALL ja_JP.UTF-8
 
-
-RUN wget https://bootstrap.pypa.io/3.3/get-pip.py && python3.5 get-pip.py && \
-rm -rf /root/.cache
-
 ENV PYTHONUNBUFFERED=TRUE
 ENV PYTHONDONTWRITEBYTECODE=TRUE
 ENV PATH="/opt/program:${PATH}"
 
-RUN pip3 install --upgrade pip
-
-COPY requirements.txt /opt/app/requirements.txt
-WORKDIR /opt/app
-RUN pip3 install -r requirements.txt
-
+# for jupyter extension
 RUN npm install -g n
+
+RUN n 12.2.0
+
+RUN curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python3
+
+# RUN pip3 install poetry==1.0.0a4
+RUN pip3 install poetry
+
+# COPY env/poetry.lock ./poetry.lock
+# COPY env/pyproject.toml ./pyproject.toml
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+WORKDIR /home
+RUN mkdir  -p /root/.config/pypoetry/
+RUN touch /root/.config/pypoetry/config.toml
+
+RUN poetry config settings.virtualenvs.create false
+RUN which python3
+RUN python3 -m venv ~/.cache/pypoetry/virtualenvs/gvatech $VIRTUAL_ENV
+
+RUN poetry init
+
+RUN poetry add jupyterlab
 
 RUN n list
 
-RUN n latest
-RUN echo node version:
 RUN node -v
 RUN echo "build jupyter extension"
-RUN jupyter labextension install @jupyterlab/toc
-WORKDIR /home
+RUN poetry run jupyter labextension install @jupyterlab/toc
+RUN poetry run jupyter labextension install @jupyterlab/plotly-extension
+RUN mkdir workspace
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

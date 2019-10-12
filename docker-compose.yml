@@ -1,4 +1,4 @@
-version: '3.5'
+version: '2.3'
 services:
     mysql_db:
         container_name: ai_mysql
@@ -23,10 +23,11 @@ services:
             dockerfile: ./docker/Dockerfile-jupyter
         user: root
         volumes:
-            - ./home:/home
+          - ./home:/home/workspace
         ports:
             - "8888:8888"
         command: jupyter lab --allow-root --ip=0.0.0.0 --no-browser --NotebookApp.token=''
+        runtime: nvidia
         networks:
             - net
         links:
