@@ -72,10 +72,6 @@ RUN poetry config settings.virtualenvs.create false
 RUN which python3
 RUN python3 -m venv ~/.cache/pypoetry/virtualenvs/gvatech $VIRTUAL_ENV
 
-RUN poetry init
-
-RUN poetry add jupyterlab
-
 RUN n list
 
 RUN node -v
