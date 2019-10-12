@@ -56,13 +56,11 @@ RUN npm install -g n
 
 RUN n 12.2.0
 
-RUN curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python3
-
 # RUN pip3 install poetry==1.0.0a4
 RUN pip3 install poetry
 
-# COPY env/poetry.lock ./poetry.lock
-# COPY env/pyproject.toml ./pyproject.toml
+COPY env/poetry.lock ./poetry.lock
+COPY env/pyproject.toml ./pyproject.toml
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
@@ -85,5 +83,4 @@ RUN echo "build jupyter extension"
 RUN poetry run jupyter labextension install @jupyterlab/toc
 RUN poetry run jupyter labextension install @jupyterlab/plotly-extension
 RUN mkdir workspace
-
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+# ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
