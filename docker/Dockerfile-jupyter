@@ -56,21 +56,23 @@ RUN npm install -g n
 
 RUN n 12.2.0
 
-# RUN pip3 install poetry==1.0.0a4
-RUN pip3 install poetry
+RUN pip3 install poetry==1.0.0a4
+
+
+WORKDIR /home
 
 COPY env/poetry.lock ./poetry.lock
 COPY env/pyproject.toml ./pyproject.toml
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
 
-WORKDIR /home
-RUN mkdir  -p /root/.config/pypoetry/
-RUN touch /root/.config/pypoetry/config.toml
+RUN poetry install
 
-RUN poetry config settings.virtualenvs.create false
-RUN which python3
-RUN python3 -m venv ~/.cache/pypoetry/virtualenvs/gvatech $VIRTUAL_ENV
+# RUN poetry init
+#
+# RUN poetry add jupyterlab
+# RUN poetry add numpy
+# RUN poetry add pandas
+# RUN poetry add matplotlib
+# RUN poetry add scikit-learn
 
 RUN n list
 
