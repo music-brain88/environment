@@ -80,5 +80,6 @@ RUN node -v
 RUN echo "build jupyter extension"
 RUN poetry run jupyter labextension install @jupyterlab/toc
 RUN poetry run jupyter labextension install @jupyterlab/plotly-extension
+RUN poetry run jupyter labextension install @krassowski/jupyterlab-lsp
 RUN mkdir workspace
 # ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
