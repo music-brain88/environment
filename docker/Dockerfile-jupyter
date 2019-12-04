@@ -54,9 +54,10 @@ ENV PATH="/opt/program:${PATH}"
 # for jupyter extension
 RUN npm install -g n
 
-RUN n 12.2.0
+RUN n 12.13.1
 
-RUN pip3 install poetry==1.0.0a4
+RUN pip3 install --upgrade pip
+RUN pip3 install poetry==0.12.17
 
 
 WORKDIR /home
@@ -65,14 +66,6 @@ COPY env/poetry.lock ./poetry.lock
 COPY env/pyproject.toml ./pyproject.toml
 
 RUN poetry install
-
-# RUN poetry init
-#
-# RUN poetry add jupyterlab
-# RUN poetry add numpy
-# RUN poetry add pandas
-# RUN poetry add matplotlib
-# RUN poetry add scikit-learn
 
 RUN n list
 
