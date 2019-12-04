@@ -66,13 +66,12 @@ COPY env/poetry.lock ./poetry.lock
 COPY env/pyproject.toml ./pyproject.toml
 
 RUN poetry install
-
-RUN n list
+RUN poetry add trains
 
 RUN node -v
 RUN echo "build jupyter extension"
 RUN poetry run jupyter labextension install @jupyterlab/toc
-RUN poetry run jupyter labextension install @jupyterlab/plotly-extension
+#RUN poetry run jupyter labextension install @jupyterlab/plotly-extension
 RUN poetry run jupyter labextension install @krassowski/jupyterlab-lsp
+
 RUN mkdir workspace
-# ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
