@@ -1,0 +1,3 @@
+[submodule "data/trains-server"]
+	path = data/trains-server
+	url = https://github.com/allegroai/trains-server.git
