@@ -26,9 +26,10 @@ services:
           - ./home:/home/workspace
         ports:
             - "8888:8888"
-        command: jupyter lab --allow-root --ip=0.0.0.0 --no-browser --NotebookApp.token=''
+        command: poetry run jupyter lab --allow-root --ip=0.0.0.0 --no-browser --NotebookApp.token=''
         networks:
             - net
+            - trains-server_backend
         links:
           - mysql_db:mysql_db
 volumes:
@@ -39,5 +40,5 @@ networks:
     driver: bridge
     ipam:
       driver: default
-  trains_server_backend:
+  trains-server_backend:
     external: true

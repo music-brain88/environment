@@ -30,6 +30,7 @@ services:
         runtime: nvidia
         networks:
             - net
+            - trains-server_backend
         links:
           - mysql_db:mysql_db
 volumes:
@@ -39,6 +40,6 @@ networks:
   net:
     driver: bridge
     ipam:
-  trains_server_backend:
+  trains-server_backend:
     external: true
     driver: default
