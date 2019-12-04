@@ -1,0 +1,44 @@
+version: '2.3'
+services:
+    mysql_db:
+        container_name: ai_mysql
+        build:
+            context: .
+            dockerfile: ./docker/Dockerfile-mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: ai_db
+            MYSQL_USER: research
+            MYSQL_PASSWORD: research
+        volumes:
+            - ./data/common_db/conf.d:/etc/mysql/conf.d
+        ports:
+            - "33060:33060"
+        networks:
+            - net
+    jupyter:
+        container_name: python_lab
+        build:
+            context: .
+            dockerfile: ./docker/Dockerfile-jupyter
+        user: root
+        volumes:
+          - ./home:/home/workspace
+        ports:
+            - "8888:8888"
+        command: jupyter lab --allow-root --ip=0.0.0.0 --no-browser --NotebookApp.token=''
+        runtime: nvidia
+        networks:
+            - net
+        links:
+          - mysql_db:mysql_db
+volumes:
+    mysql-storage:
+        driver: local
+networks:
+  net:
+    driver: bridge
+    ipam:
+  trains_server_backend:
+    external: true
+    driver: default
