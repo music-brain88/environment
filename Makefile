@@ -7,7 +7,6 @@ $(eval file :=  docker-compose-linux.yml)
 endif
 
 compose-build:
-	sh docker_env.sh
 	docker-compose -f $(file) build
 
 compose-no-cache-build:
