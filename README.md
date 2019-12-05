@@ -20,6 +20,38 @@ If you haven't install  `docker` and `docker-compose`  you must install
 
 ---
 
+
+
+#### Step1.
+
+Build docker
+
+```shell
+make compose-build
+```
+
+
+
+#### Step2.
+
+Set Up Trains
+
+```shell
+make trains-init
+```
+
+
+
+#### Step 3.
+
+```
+
+```
+
+
+
+
+
 #### Step1.
 
 Build  docker.
