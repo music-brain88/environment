@@ -12,5 +12,7 @@ jobs:
       - uses: actions/checkout@v1
       - name: Install packages
         run: brew install docker docker-compose
+      - name: Docker daemon start
+        run: open docker
       - name: build on ${{matrix.os}}
         run: docker-compose -f docker-compose-darwin.yml build
