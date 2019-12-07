@@ -1,4 +1,4 @@
-ifeq  ($(shell uname),Darwin)
+ifeq ($(shell uname), Darwin)
 # OS X だった場合
 $(eval file :=  docker-compose-darwin.yml)
 else
