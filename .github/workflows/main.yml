@@ -7,8 +7,10 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-18.04, macos-latest]
+        os: [macos-latest]
     steps:
       - uses: actions/checkout@v1
+      - name: Install packages
+        run: brew install docker docker-compose
       - name: build on ${{matrix.os}}
         run: docker-compose -f docker-compose-darwin.yml build
