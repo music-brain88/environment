@@ -10,11 +10,11 @@ jobs:
         os: [macos-latest]
     steps:
       - uses: actions/checkout@v1
-      - name: Install packages
+      - name: Install Docker
         run: brew cask install docker
       - name: install docker-compose
         run: brew install docker-compose
       - name: Docker daemon start
-        run: open docker
+        run: open /Applications/Docker.app
       - name: build on ${{matrix.os}}
         run: docker-compose -f docker-compose-darwin.yml build
